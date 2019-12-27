@@ -17,7 +17,7 @@ class App extends Component {
   state = {
     showBackdrop: false,
     showMobileNav: false,
-    isAuth: true,
+    isAuth: false,
     token: null,
     userId: null,
     authLoading: false,
@@ -100,7 +100,17 @@ class App extends Component {
   signupHandler = (event, authData) => {
     event.preventDefault();
     this.setState({ authLoading: true });
-    fetch('URL')
+    fetch('http://localhost:8080/auth/signup', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: authData.signupForm.email.value,
+          password: authData.signupForm.password.value,
+          name: authData.signupForm.name.value,
+        })
+      })
       .then(res => {
         if (res.status === 422) {
           throw new Error(
@@ -139,85 +149,92 @@ class App extends Component {
   };
 
   render() {
-    let routes = (
-      <Switch>
-        <Route
-          path="/"
-          exact
-          render={props => (
-            <LoginPage
-              {...props}
-              onLogin={this.loginHandler}
-              loading={this.state.authLoading}
-            />
-          )}
-        />
-        <Route
-          path="/signup"
-          exact
-          render={props => (
-            <SignupPage
-              {...props}
-              onSignup={this.signupHandler}
-              loading={this.state.authLoading}
-            />
-          )}
-        />
-        <Redirect to="/" />
-      </Switch>
+    let routes = ( <
+      Switch >
+      <
+      Route path = "/"
+      exact render = {
+        props => ( <
+          LoginPage {...props }
+          onLogin = { this.loginHandler }
+          loading = { this.state.authLoading }
+          />
+        )
+      }
+      /> <
+      Route path = "/signup"
+      exact render = {
+        props => ( <
+          SignupPage {...props }
+          onSignup = { this.signupHandler }
+          loading = { this.state.authLoading }
+          />
+        )
+      }
+      /> <
+      Redirect to = "/" / >
+      <
+      /Switch>
     );
     if (this.state.isAuth) {
-      routes = (
-        <Switch>
-          <Route
-            path="/"
-            exact
-            render={props => (
-              <FeedPage userId={this.state.userId} token={this.state.token} />
-            )}
-          />
-          <Route
-            path="/:postId"
-            render={props => (
-              <SinglePostPage
-                {...props}
-                userId={this.state.userId}
-                token={this.state.token}
-              />
-            )}
-          />
-          <Redirect to="/" />
-        </Switch>
+      routes = ( <
+        Switch >
+        <
+        Route path = "/"
+        exact render = {
+          props => ( <
+            FeedPage userId = { this.state.userId }
+            token = { this.state.token }
+            />
+          )
+        }
+        /> <
+        Route path = "/:postId"
+        render = {
+          props => ( <
+            SinglePostPage {...props }
+            userId = { this.state.userId }
+            token = { this.state.token }
+            />
+          )
+        }
+        /> <
+        Redirect to = "/" / >
+        <
+        /Switch>
       );
     }
-    return (
-      <Fragment>
-        {this.state.showBackdrop && (
-          <Backdrop onClick={this.backdropClickHandler} />
-        )}
-        <ErrorHandler error={this.state.error} onHandle={this.errorHandler} />
-        <Layout
-          header={
-            <Toolbar>
-              <MainNavigation
-                onOpenMobileNav={this.mobileNavHandler.bind(this, true)}
-                onLogout={this.logoutHandler}
-                isAuth={this.state.isAuth}
-              />
-            </Toolbar>
-          }
-          mobileNav={
-            <MobileNavigation
-              open={this.state.showMobileNav}
-              mobile
-              onChooseItem={this.mobileNavHandler.bind(this, false)}
-              onLogout={this.logoutHandler}
-              isAuth={this.state.isAuth}
-            />
-          }
+    return ( <
+      Fragment > {
+        this.state.showBackdrop && ( <
+          Backdrop onClick = { this.backdropClickHandler }
+          />
+        )
+      } <
+      ErrorHandler error = { this.state.error }
+      onHandle = { this.errorHandler }
+      /> <
+      Layout header = { <
+        Toolbar >
+        <
+        MainNavigation
+        onOpenMobileNav = { this.mobileNavHandler.bind(this, true) }
+        onLogout = { this.logoutHandler }
+        isAuth = { this.state.isAuth }
+        /> < /
+        Toolbar >
+      }
+      mobileNav = { <
+        MobileNavigation
+        open = { this.state.showMobileNav }
+        mobile
+        onChooseItem = { this.mobileNavHandler.bind(this, false) }
+        onLogout = { this.logoutHandler }
+        isAuth = { this.state.isAuth }
         />
-        {routes}
-      </Fragment>
+      }
+      /> { routes } < /
+      Fragment >
     );
   }
 }
