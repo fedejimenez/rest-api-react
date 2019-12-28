@@ -68,7 +68,6 @@ class App extends Component {
           email: authData.email,
           password: authData.password
         })
-
       })
       .then(res => {
         if (res.status === 422) {
@@ -118,7 +117,7 @@ class App extends Component {
         body: JSON.stringify({
           email: authData.signupForm.email.value,
           password: authData.signupForm.password.value,
-          name: authData.signupForm.name.value,
+          name: authData.signupForm.name.value
         })
       })
       .then(res => {
@@ -231,8 +230,8 @@ class App extends Component {
         onOpenMobileNav = { this.mobileNavHandler.bind(this, true) }
         onLogout = { this.logoutHandler }
         isAuth = { this.state.isAuth }
-        /> < /
-        Toolbar >
+        /> <
+        /Toolbar>
       }
       mobileNav = { <
         MobileNavigation
@@ -243,8 +242,8 @@ class App extends Component {
         isAuth = { this.state.isAuth }
         />
       }
-      /> { routes } < /
-      Fragment >
+      /> { routes } <
+      /Fragment>
     );
   }
 }

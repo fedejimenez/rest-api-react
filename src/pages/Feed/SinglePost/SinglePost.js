@@ -51,10 +51,10 @@ class SinglePost extends Component {
       div className = "single-post__image" >
       <
       Image contain imageUrl = { this.state.image }
-      /> < /
-      div > <
-      p > { this.state.content } < /p> < /
-      section >
+      /> <
+      /div> <
+      p > { this.state.content } < /p> <
+      /section>
     );
   }
 }
